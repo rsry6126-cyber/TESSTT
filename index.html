@@ -93,6 +93,12 @@
         { id: 15, file: "assets/pic15.jpg" }
       ];
 
+      // Preload images for better performance
+      GALLERY_DATA.forEach(item => {
+        const img = new Image();
+        img.src = item.file;
+      });
+
       // 2. A-Frame Component Registration (Must be before scene)
       if (typeof AFRAME !== 'undefined') {
         AFRAME.registerComponent('maintain-perceived-size', {
@@ -545,4 +551,3 @@
     </script>
   </body>
 </html>
-              
