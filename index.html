@@ -6,10 +6,10 @@
     <title>FYM 140</title>
     
     <!-- Libraries -->
-    <script src="assets/aframe.min.js"></script>
-    <script src="assets/aframe-event-set-component.min.js"></script>
-    <script src="assets/aframe-look-at-component.min.js"></script>
-    <script src="assets/tailwind.js"></script>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,21 +94,21 @@
       const CURATOR_NOTE = "This is a digital experience that will showcase pictures showing how our Leaders became a good influence through wholeheartedly fulfilling their duty. And as a result, it led to the wholehearted fulfillment of duties by the ministers and ministerial workers and the Church officers";
 
       const GALLERY_DATA = [
-        { id: 1, file: "assets/pic1.jpg" },
-        { id: 2, file: "assets/pic2.jpg" },
-        { id: 3, file: "assets/pic3.jpg" },
-        { id: 4, file: "assets/pic4.jpg" },
-        { id: 5, file: "assets/pic5.jpg" },
-        { id: 6, file: "assets/pic6.jpg" },
-        { id: 7, file: "assets/pic7.jpg" },
-        { id: 8, file: "assets/pic8.jpg" },
-        { id: 9, file: "assets/pic9.jpg" },
-        { id: 10, file: "assets/pic10.jpg" },
-        { id: 11, file: "assets/pic11.jpg" },
-        { id: 12, file: "assets/pic12.jpg" },
-        { id: 13, file: "assets/pic13.jpg" },
-        { id: 14, file: "assets/pic14.jpg" },
-        { id: 15, file: "assets/pic15.jpg" }
+        { id: 1, file: "assets/pic1.jpg", description: "The beginning of a transformative journey in leadership." },
+        { id: 2, file: "assets/pic2.jpg", description: "Wholehearted fulfillment of duty in action." },
+        { id: 3, file: "assets/pic3.jpg", description: "Setting a standard of excellence for all to follow." },
+        { id: 4, file: "assets/pic4.jpg", description: "Ministerial unity through shared purpose and dedication." },
+        { id: 5, file: "assets/pic5.jpg", description: "The ripple effect of good influence within the Church." },
+        { id: 6, file: "assets/pic6.jpg", description: "Steadfast commitment despite challenges along the way." },
+        { id: 7, file: "assets/pic7.jpg", description: "Church officers lead with grace and determination." },
+        { id: 8, file: "assets/pic8.jpg", description: "Fostering growth and inspiration among the workers." },
+        { id: 9, file: "assets/pic9.jpg", description: "A moment of reflection on the weight of leadership." },
+        { id: 10, file: "assets/pic10.jpg", description: "The collective power of fulfillment in their missions." },
+        { id: 11, file: "assets/pic11.jpg", description: "Honoring the path forged by dedicated leaders." },
+        { id: 12, file: "assets/pic12.jpg", description: "Continuing the legacy of influence and duty fulfilled." },
+        { id: 13, file: "assets/pic13.jpg", description: "Expanding the reach of wholehearted service." },
+        { id: 14, file: "assets/pic14.jpg", description: "A testament to the strength of unified faith." },
+        { id: 15, file: "assets/pic15.jpg", description: "Looking forward with the same spirit of duty." }
       ];
 
       // 2. A-Frame Component Registration (Must be before scene)
@@ -241,7 +241,9 @@
         if (!window.currentItem) return;
         const modal = document.getElementById('fullscreen-modal');
         const img = document.getElementById('fullscreen-img');
+        const desc = document.getElementById('fullscreen-desc');
         img.src = window.currentItem.file;
+        desc.innerText = window.currentItem.description || "";
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         setTimeout(() => modal.classList.remove('opacity-0'), 10);
@@ -321,8 +323,8 @@
 
       <a-entity id="gallery-container" follow-position="#main-camera" position="0 1.6 0"></a-entity>
 
-      <a-light type="ambient" intensity="0.5"></a-light>
-      <a-light type="directional" position="1 5 2" intensity="0.4"></a-light>
+      <a-light type="ambient" intensity="0.8"></a-light>
+      <a-light type="directional" position="1 5 2" intensity="0.6"></a-light>
       
       <!-- Standard Matte Floor -->
       <a-plane id="floor" rotation="-90 0 0" width="100" height="100" color="#050505" material="roughness: 1; metalness: 0"></a-plane>
@@ -397,7 +399,12 @@
         <button onclick="window.closeFullscreen()" class="absolute top-6 right-6 p-4 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all z-[210] pointer-events-auto">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
         </button>
-        <img id="fullscreen-img" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" referrerPolicy="no-referrer">
+        <div class="relative w-full h-full flex flex-col items-center justify-center gap-8">
+          <img id="fullscreen-img" src="" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl" referrerPolicy="no-referrer">
+          <div class="max-w-2xl text-center px-4">
+            <p id="fullscreen-desc" class="text-white text-lg md:text-2xl font-serif italic leading-relaxed"></p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -501,7 +508,7 @@
 
         entity.innerHTML = `
           <a-box id="frame-border-${item.id}" class="frame-border" position="0 0 -0.03" width="${baseW + 0.06}" height="${baseH + 0.06}" depth="0.04" color="#D4AF37" material="roughness: 0.3; metalness: 0.8"></a-box>
-          <a-image id="canvas-${item.id}" src="#img-${item.id}" width="${baseW}" height="${baseH}" class="clickable" gallery-item="id: ${item.id}"></a-image>
+          <a-image id="canvas-${item.id}" src="#img-${item.id}" width="${baseW}" height="${baseH}" material="shader: flat" class="clickable" gallery-item="id: ${item.id}"></a-image>
         `;
 
         container.appendChild(entity);
